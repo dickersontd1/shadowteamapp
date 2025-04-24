@@ -71,10 +71,11 @@
           <option value="REDGE"> Right Edge Rusher (REDGE)</option>
           <option value="LB">Linebacker (LB)</option>
           <option value="CB">Cornerback (CB)</option>
-          <option value="S"> Strong Safety (SS)</option>
+          <option value="SS"> Strong Safety (SS)</option>
           <option value="FS"> Free Safety (FS)</option>
           <option value="K">Kicker (K)</option>
           <option value="P">Punter (P)</option>
+          <option value="LS">Long Snapper (LS)</option>
         </select>
         <button id="draft-player" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Draft Player</button>
       </div>
@@ -122,7 +123,7 @@
     const draftPlayerButton = document.getElementById('draft-player');
 
     // Ordered positions for depth chart
-    const positionOrder = ['QB', 'RB', 'WR', 'TE', 'LT', 'LG', 'C', 'RG', 'RT', 'LEDGE', 'DT', 'REDGE', 'LB', 'CB', 'SS', 'FS', 'K', 'P'];
+    const positionOrder = ['QB', 'RB', 'WR', 'TE', 'LT', 'LG', 'C', 'RG', 'RT', 'LEDGE', 'DT', 'REDGE', 'LB', 'CB', 'SS', 'FS', 'K', 'P', 'LS'];
 
     // Random number generator
     function getRandomPick(min, max) {
