@@ -61,14 +61,18 @@
           <option value="RB">Running Back (RB)</option>
           <option value="WR">Wide Receiver (WR)</option>
           <option value="TE">Tight End (TE)</option>
-          <option value="OT">Offensive Tackle (OT)</option>
-          <option value="OG">Offensive Guard (OG)</option>
+          <option value="LT">Left Tackle (LT)</option>
+          <option value="LG">Left Guard (LG)</option>
           <option value="C">Center (C)</option>
-          <option value="EDGE">Edge Rusher (EDGE)</option>
+          <option value="RG">Right Guard (RG)</option>
+         <option value="RT">Right Tackle (RT)</option>
+          <option value="LEDGE"> Left Edge Rusher (LEDGE)</option>
           <option value="DT">Defensive Tackle (DT)</option>
+          <option value="REDGE"> Left Edge Rusher (LEDGE)</option>
           <option value="LB">Linebacker (LB)</option>
           <option value="CB">Cornerback (CB)</option>
-          <option value="S">Safety (S)</option>
+          <option value="S"> Strong Safety (SS)</option>
+          <option value="FS"> Free Safety (FS)</option>
           <option value="K">Kicker (K)</option>
           <option value="P">Punter (P)</option>
         </select>
@@ -118,7 +122,7 @@
     const draftPlayerButton = document.getElementById('draft-player');
 
     // Ordered positions for depth chart
-    const positionOrder = ['QB', 'RB', 'WR', 'TE', 'OT', 'OG', 'C', 'EDGE', 'DT', 'LB', 'CB', 'S', 'K', 'P'];
+    const positionOrder = ['QB', 'RB', 'WR', 'TE', 'LT', 'LG', 'C', 'RG', 'RT', 'LEDGE', 'DT', 'REDGE', 'LB', 'CB', 'SS', 'FS', 'K', 'P'];
 
     // Random number generator
     function getRandomPick(min, max) {
