@@ -4,6 +4,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NFL Shadow Draft Simulator</title>
+  <!-- Welcome & Rules Section -->
+<div class="bg-white p-6 rounded-lg shadow-lg mb-8 text-gray-800">
+  <h2 class="text-2xl font-bold mb-4">Welcome to the Shadow Draft</h2>
+  <p class="mb-2">
+    Step into the shoes of an NFL general manager! In this shadow draft, you'll make your own picks in real-time as the NFL Draft unfolds.
+  </p>
+  <ul class="list-disc list-inside mb-4 space-y-1">
+    <li><strong>Honor Code:</strong> Make your pick <em>before</em> the team on TV announces theirs.</li>
+    <li>If you miss a pick, try not to peek at who the team actually selected — just make the next pick as honestly as possible.</li>
+    <li>This is a long-term challenge: build your own team year after year, and see how your draft strategy holds up over time.</li>
+    <li>Evaluate your success, learn from your picks, and have fun!</li>
+  </ul>
+  <p>
+    WHO DEY, Be honest, trust your instincts, and welcome to the Shadow Team!
+  </p>
+</div>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     body {
@@ -28,7 +44,7 @@
     <!-- Step 1: Assign Picks -->
     <div id="assign-picks" class="bg-white p-6 rounded-lg shadow-lg mb-8">
       <h2 class="text-2xl font-bold text-gray-800 mb-4">Step 1: Assign Your Draft Picks</h2>
-      <p class="text-gray-600 mb-4">Choose your experience level. New users (<3 years) get two picks (1–10, 10–20). Experienced users (≥3 years) get one pick (1–32). Use the honor code to draft in real-time alongside the TV draft board (e.g., ESPN, NFL Network).</p>
+      <p class="text-gray-600 mb-4"> Choose your experience level. New users (<3 years) get two picks (1–10, 10–20). Experienced users get one pick (1–32). Use the honor code to draft in real-time alongside the TV draft board (e.g., ESPN, NFL Network).</p>
       <div class="flex space-x-4 mb-4">
         <button id="rng-new-user" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">New User: Two Picks</button>
         <button id="rng-experienced-user" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Experienced User: One Pick</button>
@@ -105,7 +121,7 @@
     const draftPlayerButton = document.getElementById('draft-player');
 
     // Ordered positions for depth chart
-    const positionOrder = ['QB', 'RB', 'WR', 'TE', 'OT', 'OG', 'C', '-edge', 'DT', 'LB', 'CB', 'S', 'K', 'P'];
+    const positionOrder = ['QB', 'RB', 'WR', 'TE', 'OT', 'OG', 'C', 'EDGE', 'DT', 'LB', 'CB', 'S', 'K', 'P'];
 
     // Random number generator
     function getRandomPick(min, max) {
