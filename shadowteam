@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NFL Shadow Draft Simulator</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background-color: #1a2a44; /* NFL dark blue */
+      color: #e6e6e6; /* Silver text */
+    }
+    .nfl-logo {
+      display: block;
+      margin: 0 auto;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body class="font-sans">
+  <div class="container mx-auto p-6">
+    <!-- Logo -->
+    <img src="https://via.placeholder.com/150x50?text=NFL+Draft+Logo" alt="NFL Draft Logo" class="nfl-logo mb-8">
+
+    <!-- Title -->
+    <h1 class="text-4xl font-bold0.0">NFL Shadow Draft Simulator</h1>
+
+    <!-- Step 1: Assign Picks -->
+    <div id="assign-picks" class="bg-white p-6 rounded-lg shadow-lg mb-8">
+      <h2 class="text-2xl font-bold text-gray-800 mb-4">Step 1: Assign Your Draft Picks</h2>
+      <p class="text-gray-600 mb-4">Choose your experience level. New users (<3 years) get two picks (1–10, 10–20). Experienced users (≥3 years) get one pick (1–32). Use the honor code to draft in real-time alongside the TV draft board (e.g., ESPN, NFL Network).</p>
+      <div class="flex space-x-4 mb-4">
+        <button id="rng-new-user" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">New User: Two Picks</button>
+        <button id="rng-experienced-user" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Experienced User: One Pick</button>
+      </div>
+      <p id="pick-result" class="text-lg font-medium text-gray-800"></p>
+    </div>
+
+    <!-- Step 2: Make Selections -->
+    <div id="make-selections" class="bg-white p-6 rounded-lg shadow-lg mb-8">
+      <h2 class="text-2xl font-bold text-gray-800 mb-4">Step 2: Make Draft Selections</h2>
+      <p class="text-gray-600 mb-4">Enter a player name and select their position to draft them with your assigned picks.</p>
+      <div class="flex flex-col space-y-4 mb-4">
+        <input id="player-name" type="text" placeholder="Enter player name" class="w-full border-2 p-2 rounded text-gray-800">
+        <select id="player-position" class="w-full border-2 p-2 rounded text-gray-800">
+          <option value="" disabled selected>Select position</option>
+          <option value="QB">Quarterback (QB)</option>
+          <option value="RB">Running Back (RB)</option>
+          <option value="WR">Wide Receiver (WR)</option>
+          <option value="TE">Tight End (TE)</option>
+          <option value="OT">Offensive Tackle (OT)</option>
+          <option value="OG">Offensive Guard (OG)</option>
+          <option value="C">Center (C)</option>
+          <option value="EDGE">Edge Rusher (EDGE)</option>
+          <option value="DT">Defensive Tackle (DT)</option>
+          <option value="LB">Linebacker (LB)</option>
+          <option value="CB">Cornerback (CB)</option>
+          <option value="S">Safety (S)</option>
+          <option value="K">Kicker (K)</option>
+          <option value="P">Punter (P)</option>
+        </select>
+        <button id="draft-player" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Draft Player</button>
+      </div>
+      <p id="draft-status" class="text-lg font-medium text-gray-800"></p>
+    </div>
+
+    <!-- Step 3: View Roster -->
+    <div id="view-roster" class="bg-white p-6 rounded-lg shadow-lg">
+      <h2 class="text-2xl font-bold text-gray-800 mb-4">Step 3: Your Roster (Depth Chart)</h2>
+      <div class="flex justify-end space-x-4 mb-4">
+        <button id="copy-roster" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Copy Roster to Clipboard</button>
+        <button id="clear-roster" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">Clear Roster</button>
+      </div>
+      <p id="copy-status" class="text-lg font-medium text-gray-800 mb-4"></p>
+      <table id="roster-table" class="w-full border-collapse border border-gray-300 text-gray-800">
+        <thead>
+          <tr class="bg-gray-100">
+            <th class="border border-gray-300 p-4 text-left">Position</th>
+            <th class="border border-gray-300 p-4 text-left">Players</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    // State management
+    let state = {
+      picks: [],
+      roster: []
+    };
+
+    // DOM elements
+    const pickResult = document.getElementById('pick-result');
+    const playerNameInput = document.getElementById('player-name');
+    const playerPositionSelect = document.getElementById('player-position');
+    const draftStatus = document.getElementById('draft-status');
+    const rosterTableBody = document.getElementById('roster-table').querySelector('tbody');
+    const copyRosterButton = document.getElementById('copy-roster');
+    const clearRosterButton = document.getElementById('clear-roster');
+    const copyStatus = document.getElementById('copy-status');
+    const rngNewUserButton = document.getElementById('rng-new-user');
+    const rngExperiencedUserButton = document.getElementById('rng-experienced-user');
+    const draftPlayerButton = document.getElementById('draft-player');
+
+    // Ordered positions for depth chart
+    const positionOrder = ['QB', 'RB', 'WR', 'TE', 'OT', 'OG', 'C', '-edge', 'DT', 'LB', 'CB', 'S', 'K', 'P'];
+
+    // Random number generator
+    function getRandomPick(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    // Save state to localStorage
+    function saveState() {
+      localStorage.setItem('shadowDraftState', JSON.stringify(state));
+    }
+
+    // Load state from localStorage with validation
+    function loadState() {
+      const savedState = localStorage.getItem('shadowDraftState');
+      if (savedState) {
+        try {
+          const parsedState = JSON.parse(savedState);
+          state.picks = Array.isArray(parsedState.picks) ? parsedState.picks : [];
+          state.roster = Array.isArray(parsedState.roster) ? parsedState.roster : [];
+        } catch (error) {
+          console.error('Failed to parse saved state:', error);
+          state.picks = [];
+          state.roster = [];
+        }
+      }
+      updateUI();
+    }
+
+    // Update UI
+    function updateUI() {
+      // Update picks
+      if (state.picks.length > 0) {
+        pickResult.textContent = `Your picks: ${state.picks.join(', ')}`;
+      } else {
+        pickResult.textContent = state.roster.length > 0 ? 'No picks remaining.' : '';
+      }
+
+      // Update roster table
+      const rosterByPosition = {};
+      positionOrder.forEach(pos => rosterByPosition[pos] = []);
+      state.roster.forEach(player => {
+        if (rosterByPosition[player.position]) {
+          rosterByPosition[player.position].push(player);
+        }
+      });
+
+      rosterTableBody.innerHTML = positionOrder.map(pos => {
+        const players = rosterByPosition[pos];
+        const playerList = players.length > 0
+          ? players.map(p => `${p.player} (Pick ${p.pick})`).join('<br>')
+          : '-';
+        return `
+          <tr>
+            <td class="border border-gray-300 p-4">${pos}</td>
+            <td class="border border-gray-300 p-4 leading-relaxed">${playerList}</td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // Copy roster to clipboard
+    function copyRosterToClipboard() {
+      const rosterByPosition = {};
+      positionOrder.forEach(pos => rosterByPosition[pos] = []);
+      state.roster.forEach(player => {
+        if (rosterByPosition[player.position]) {
+          rosterByPosition[player.position].push(player);
+        }
+      });
+
+      const text = ['Position\tPlayer\tPick'].concat(
+        positionOrder.flatMap(pos => {
+          const players = rosterByPosition[pos];
+          return players.map(p => `${pos}\t${p.player} (Pick ${p.pick})\t${p.pick}`);
+        })
+      ).join('\n');
+
+      navigator.clipboard.writeText(text).then(() => {
+        copyStatus.textContent = 'Roster copied to clipboard!';
+        setTimeout(() => { copyStatus.textContent = ''; }, 3000);
+      }).catch(err => {
+        copyStatus.textContent = 'Failed to copy roster.';
+        console.error('Clipboard error:', err);
+      });
+    }
+
+    // Clear roster
+    function clearRoster() {
+      state.picks = [];
+      state.roster = [];
+      localStorage.removeItem('shadowDraftState');
+      updateUI();
+      copyStatus.textContent = 'Roster cleared!';
+      setTimeout(() => { copyStatus.textContent = ''; }, 3000);
+    }
+
+    // Event listeners
+    rngNewUserButton.addEventListener('click', () => {
+      state.picks = [
+        getRandomPick(1, 10),
+        getRandomPick(10, 20)
+      ].sort((a, b) => a - b);
+      saveState();
+      updateUI();
+    });
+
+    rngExperiencedUserButton.addEventListener('click', () => {
+      state.picks = [getRandomPick(1, 32)];
+      saveState();
+      updateUI();
+    });
+
+    draftPlayerButton.addEventListener('click', () => {
+      const player = playerNameInput.value.trim();
+      const position = playerPositionSelect.value;
+
+      if (!player) {
+        draftStatus.textContent = 'Please enter a player name.';
+        return;
+      }
+      if (!position) {
+        draftStatus.textContent = 'Please select a position.';
+        return;
+      }
+      if (state.picks.length === 0) {
+        draftStatus.textContent = 'No picks available. Assign picks first.';
+        return;
+      }
+
+      const pick = state.picks.shift();
+      state.roster.push({ player, pick, position });
+      playerNameInput.value = '';
+      playerPositionSelect.value = '';
+      draftStatus.textContent = `${player} drafted as ${position} with pick ${pick}!`;
+      saveState();
+      updateUI();
+    });
+
+    copyRosterButton.addEventListener('click', copyRosterToClipboard);
+    clearRosterButton.addEventListener('click', clearRoster);
+
+    // Initialize
+    loadState();
+  </script>
+</body>
+</html>
