@@ -20,28 +20,31 @@
 <body class="font-sans">
   <div class="container mx-auto p-6">
     <!-- Welcome & Rules Section -->
-<div class="bg-white p-6 rounded-lg shadow-lg mb-8 text-gray-800">
-  <h2 class="text-2xl font-bold mb-4">Welcome to the Shadow Draft</h2>
-  <p class="mb-2">
-    Step into the shoes of an NFL general manager! In this shadow draft, you'll make your own picks in real-time as the NFL Draft unfolds.
-  </p>
-  <ul class="list-disc list-inside mb-4 space-y-1">
-    <li><strong>Honor Code:</strong> Make your pick <em>before</em> the team on TV announces theirs.</li>
-    <li>If you miss a pick, try not to peek at who the team actually selected — just make the next pick as honestly as possible.</li>
-    <li>This is a long-term challenge: build your own team year after year, and see how your draft strategy holds up over time.</li>
-    <li>Evaluate your success, learn from your picks, and have fun!</li>
-  </ul>
-  <p>
-    WHO DEY, Be honest, trust your instincts, and welcome to the Shadow Team!
-  </p>
-</div>
+    <div class="bg-white p-6 rounded-lg shadow-lg mb-8 text-gray-800">
+      <h2 class="text-2xl font-bold mb-4">Welcome to the Shadow Draft</h2>
+      <p class="mb-2">
+        Step into the shoes of an NFL general manager! In this shadow draft, you'll make your own picks in real-time as the NFL Draft unfolds.
+      </p>
+      <ul class="list-disc list-inside mb-4 space-y-1">
+        <li><strong>Honor Code:</strong> Make your pick <em>before</em> the team on TV announces theirs.</li>
+        <li>If you miss a pick, try not to peek at who the team actually selected — just make the next pick as honestly as possible.</li>
+        <li>This is a long-term challenge: build your own team year after year, and see how your draft strategy holds up over time.</li>
+        <li>Evaluate your success, learn from your picks, and have fun!</li>
+      </ul>
+      <p class="mb-4">
+        WHO DEY, Be honest, trust your instincts, and welcome to the Shadow Team!
+      </p>
+      <p class="text-sm italic border-t pt-2">
+        A note from the creator: I'm a recent computer science college graduate and a die-hard Cincinnati Bengals fan (WHO DEY!). I built this Shadow Draft Simulator as a personal project to combine my love for football with my passion for coding. I'm currently job hunting and would love to bring my skills and enthusiasm to a team that values creativity and innovation. If you enjoy this project and know of any opportunities, feel free to reach out! Let's have some fun and build a championship roster!
+      </p>
+    </div>
     <!-- Title -->
-    <h1 class="text-4xl font-bold0.0">NFL Shadow Draft Simulator</h1>
+    <h1 class="text-4xl font-bold mb-8 text-center">NFL Shadow Draft Simulator</h1>
 
     <!-- Step 1: Assign Picks -->
     <div id="assign-picks" class="bg-white p-6 rounded-lg shadow-lg mb-8">
       <h2 class="text-2xl font-bold text-gray-800 mb-4">Step 1: Assign Your Draft Picks</h2>
-      <p class="text-gray-600 mb-4"> Choose your experience level. New users (<3 years) get two picks (1–10, 10–20). Experienced users get one pick (1–32). Use the honor code to draft in real-time alongside the TV draft board (e.g., ESPN, NFL Network).</p>
+      <p class="text-gray-600 mb-4">Choose your experience level. New users (<3 years) get two picks (1–10, 10–20). Experienced users get one pick (1–32). Use the honor code to draft in real-time alongside the TV draft board (e.g., ESPN, NFL Network).</p>
       <div class="flex space-x-4 mb-4">
         <button id="rng-new-user" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">New User: Two Picks</button>
         <button id="rng-experienced-user" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Experienced User: One Pick</button>
@@ -52,7 +55,7 @@
     <!-- Step 2: Make Selections -->
     <div id="make-selections" class="bg-white p-6 rounded-lg shadow-lg mb-8">
       <h2 class="text-2xl font-bold text-gray-800 mb-4">Step 2: Make Draft Selections</h2>
-      <p class="text-gray-600 mb-4">Enter a player name and select their position to draft them with your assigned picks.</p>
+      <p class="text-gray-600 mb-4">Enter a player name, select their position, round, and pick number to draft them.</p>
       <div class="flex flex-col space-y-4 mb-4">
         <input id="player-name" type="text" placeholder="Enter player name" class="w-full border-2 p-2 rounded text-gray-800">
         <select id="player-position" class="w-full border-2 p-2 rounded text-gray-800">
@@ -65,18 +68,30 @@
           <option value="LG">Left Guard (LG)</option>
           <option value="C">Center (C)</option>
           <option value="RG">Right Guard (RG)</option>
-         <option value="RT">Right Tackle (RT)</option>
-          <option value="LEDGE"> Left Edge Rusher (LEDGE)</option>
+          <option value="RT">Right Tackle (RT)</option>
+          <option value="LEDGE">Left Edge Rusher (LEDGE)</option>
           <option value="DT">Defensive Tackle (DT)</option>
-          <option value="REDGE"> Right Edge Rusher (REDGE)</option>
+          <option value="REDGE">Right Edge Rusher (REDGE)</option>
           <option value="LB">Linebacker (LB)</option>
           <option value="CB">Cornerback (CB)</option>
-          <option value="SS"> Strong Safety (SS)</option>
-          <option value="FS"> Free Safety (FS)</option>
+          <option value="SS">Strong Safety (SS)</option>
+          <option value="FS">Free Safety (FS)</option>
           <option value="K">Kicker (K)</option>
           <option value="P">Punter (P)</option>
           <option value="LS">Long Snapper (LS)</option>
         </select>
+        <select id="player-round" class="w-full border-2 p-2 rounded text-gray-800">
+          <option value="" disabled selected>Select round</option>
+          <option value="1">Round 1</option>
+          <option value="2">Round 2</option>
+          <option value="3">Round 3</option>
+          <option value="4">Round 4</option>
+          <option value="5">Round 5</option>
+          <option value="6">Round 6</option>
+          <option value="7">Round 7</option>
+          <option value="UDFA">Undrafted Free Agent (UDFA)</option>
+        </select>
+        <input id="pick-number" type="number" placeholder="Enter pick number (1-32)" min="1" max="32" class="w-full border-2 p-2 rounded text-gray-800">
         <button id="draft-player" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Draft Player</button>
       </div>
       <p id="draft-status" class="text-lg font-medium text-gray-800"></p>
@@ -94,7 +109,9 @@
         <thead>
           <tr class="bg-gray-100">
             <th class="border border-gray-300 p-4 text-left">Position</th>
-            <th class="border border-gray-300 p-4 text-left">Players</th>
+            <th class="border border-gray-300 p-4 text-left">Player</th>
+            <th class="border border-gray-300 p-4 text-left">Round</th>
+            <th class="border border-gray-300 p-4 text-left">Pick</th>
           </tr>
         </thead>
         <tbody></tbody>
@@ -113,6 +130,8 @@
     const pickResult = document.getElementById('pick-result');
     const playerNameInput = document.getElementById('player-name');
     const playerPositionSelect = document.getElementById('player-position');
+    const playerRoundSelect = document.getElementById('player-round');
+    const pickNumberInput = document.getElementById('pick-number');
     const draftStatus = document.getElementById('draft-status');
     const rosterTableBody = document.getElementById('roster-table').querySelector('tbody');
     const copyRosterButton = document.getElementById('copy-roster');
@@ -172,15 +191,24 @@
 
       rosterTableBody.innerHTML = positionOrder.map(pos => {
         const players = rosterByPosition[pos];
-        const playerList = players.length > 0
-          ? players.map(p => `${p.player} (Pick ${p.pick})`).join('<br>')
-          : '-';
-        return `
+        if (players.length === 0) {
+          return `
+            <tr>
+              <td class="border border-gray-300 p-4">${pos}</td>
+              <td class="border border-gray-300 p-4">-</td>
+              <td class="border border-gray-300 p-4">-</td>
+              <td class="border border-gray-300 p-4">-</td>
+            </tr>
+          `;
+        }
+        return players.map(p => `
           <tr>
             <td class="border border-gray-300 p-4">${pos}</td>
-            <td class="border border-gray-300 p-4 leading-relaxed">${playerList}</td>
+            <td class="border border-gray-300 p-4">${p.player}</td>
+            <td class="border border-gray-300 p-4">${p.round}</td>
+            <td class="border border-gray-300 p-4">${p.round === 'UDFA' ? '-' : p.pick}</td>
           </tr>
-        `;
+        `).join('');
       }).join('');
     }
 
@@ -194,10 +222,13 @@
         }
       });
 
-      const text = ['Position\tPlayer\tPick'].concat(
+      const text = ['Position\tPlayer\tRound\tPick'].concat(
         positionOrder.flatMap(pos => {
           const players = rosterByPosition[pos];
-          return players.map(p => `${pos}\t${p.player} (Pick ${p.pick})\t${p.pick}`);
+          if (players.length === 0) {
+            return [`${pos}\t-\t-\t-`];
+          }
+          return players.map(p => `${pos}\t${p.player}\t${p.round}\t${p.round === 'UDFA' ? '-' : p.pick}`);
         })
       ).join('\n');
 
@@ -239,6 +270,8 @@
     draftPlayerButton.addEventListener('click', () => {
       const player = playerNameInput.value.trim();
       const position = playerPositionSelect.value;
+      const round = playerRoundSelect.value;
+      const pick = pickNumberInput.value.trim();
 
       if (!player) {
         draftStatus.textContent = 'Please enter a player name.';
@@ -248,16 +281,22 @@
         draftStatus.textContent = 'Please select a position.';
         return;
       }
-      if (state.picks.length === 0) {
-        draftStatus.textContent = 'No picks available. Assign picks first.';
+      if (!round) {
+        draftStatus.textContent = 'Please select a round.';
+        return;
+      }
+      if (round !== 'UDFA' && (!pick || pick < 1 || pick > 32)) {
+        draftStatus.textContent = 'Please enter a valid pick number (1-32).';
         return;
       }
 
-      const pick = state.picks.shift();
-      state.roster.push({ player, pick, position });
+      const pickValue = round === 'UDFA' ? '-' : parseInt(pick);
+      state.roster.push({ player, pick: pickValue, position, round });
       playerNameInput.value = '';
       playerPositionSelect.value = '';
-      draftStatus.textContent = `${player} drafted as ${position} with pick ${pick}!`;
+      playerRoundSelect.value = '';
+      pickNumberInput.value = '';
+      draftStatus.textContent = `${player} drafted as ${position} in ${round}${round === 'UDFA' ? '' : ' Pick ' + pick}!`;
       saveState();
       updateUI();
     });
